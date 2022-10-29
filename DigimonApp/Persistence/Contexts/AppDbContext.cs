@@ -8,11 +8,6 @@ namespace DigimonApp.Persistence.Contexts
     {
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DigimonDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-        }
-
         public DbSet<Digimon> Digimons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
