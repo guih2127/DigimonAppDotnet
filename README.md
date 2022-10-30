@@ -23,8 +23,16 @@ dotnet ef database update
 ```
 
 After that, you can test the API locally and see it's own documentation, using the folloowing URL:
+
 ```
     localhost:5110/swagger/index.html
 ```
 
 The number of the port depends of how you are running this project.
+
+## Running the tests
+Tests were created for the Services of this API, you can run then using Visual Studio or, if you are using .NET Core CLI
+
+```
+dotnet test
+```
