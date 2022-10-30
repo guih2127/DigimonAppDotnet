@@ -10,7 +10,7 @@ After that, you need to create the a new database in the instance that you want 
 Server=localhost,1433;Database=yourdatabase;User ID =youruser;Password=yourpassword$
 ```
 
-For the last, you need to apply the migrations (Create the tables and insert some data), using the following command, if you are using Visual Studio:
+For the last, you need to enter the DigimonApp folter and apply the migrations (Create the tables and insert some data), using the following command, if you are using Visual Studio:
 
 ```
 Update-Database
