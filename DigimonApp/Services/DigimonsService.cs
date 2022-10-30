@@ -17,9 +17,9 @@ namespace DigimonApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Digimon>> ListAsync()
+        public async Task<IEnumerable<Digimon>> ListAsync(ListDigimonResource resource)
         {
-            return await _digimonRepository.ListAsync();
+            return await _digimonRepository.ListAsync(resource);
         }
 
         public async Task<DigimonResponse> UpdateAsync(int id, Digimon digimon)

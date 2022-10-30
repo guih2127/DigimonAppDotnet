@@ -21,9 +21,9 @@ namespace DigimonApp.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<DigimonResource>> GetAllAsync()
+        public async Task<IEnumerable<DigimonResource>> GetAllAsync([FromQuery] ListDigimonResource resource)
         {
-            var digimons = await _digimonService.ListAsync();
+            var digimons = await _digimonService.ListAsync(resource);
             var resources = _mapper.Map<IEnumerable<Digimon>, IEnumerable<DigimonResource>>(digimons);
 
             return resources;

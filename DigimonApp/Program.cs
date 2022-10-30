@@ -3,7 +3,7 @@ using DigimonApp.Persistence.Contexts;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 
-var connectionString = $"Server=localhost,1433;Database=master;User ID =sa;Password=1q2w3e4r@#$";
+var connectionString = $"Server=localhost,1433;Database=DigimonDb;User ID =sa;Password=1q2w3e4r@#$";
 
 var builder = WebApplication.CreateBuilder(args);
 
