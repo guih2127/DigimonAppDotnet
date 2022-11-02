@@ -9,6 +9,7 @@ namespace DigimonApp.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<SaveDigimonResource, Digimon>();
+            CreateMap<SaveUserResource, User>();
         }
     }
 }

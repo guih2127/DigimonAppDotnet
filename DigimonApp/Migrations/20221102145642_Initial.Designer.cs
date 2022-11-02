@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigimonApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221027133643_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20221102145642_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,10 +35,9 @@ namespace DigimonApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
+                    b.Property<byte>("Level")
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -54,16 +53,33 @@ namespace DigimonApp.Migrations
                         {
                             Id = 1,
                             Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
+                            Level = (byte)3,
                             Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
                         });
+                });
+
+            modelBuilder.Entity("DigimonApp.Domain.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

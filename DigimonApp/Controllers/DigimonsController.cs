@@ -3,6 +3,7 @@ using DigimonApp.Domain.Models;
 using DigimonApp.Domain.Services;
 using DigimonApp.Extensions;
 using DigimonApp.Resources;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigimonApp.Controllers
@@ -30,6 +31,7 @@ namespace DigimonApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostAsync([FromBody] SaveDigimonResource resource)
         {
             if (!ModelState.IsValid)

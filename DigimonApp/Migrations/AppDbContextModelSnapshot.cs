@@ -33,10 +33,9 @@ namespace DigimonApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
+                    b.Property<byte>("Level")
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -52,170 +51,33 @@ namespace DigimonApp.Migrations
                         {
                             Id = 1,
                             Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
+                            Level = (byte)3,
                             Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Image = "https://digimon.shadowsmith.com/img/agumon.jpg",
-                            Level = "Rookie",
-                            Name = "Agumon"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Image = "https://digimon.shadowsmith.com/img/greymon.jpg",
-                            Level = "Champion",
-                            Name = "Greymon"
                         });
+                });
+
+            modelBuilder.Entity("DigimonApp.Domain.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

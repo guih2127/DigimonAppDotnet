@@ -1,4 +1,6 @@
-﻿namespace DigimonApp.Resources
+﻿using DigimonApp.Domain.Models;
+
+namespace DigimonApp.Resources
 {
     public class DigimonResource
     {
