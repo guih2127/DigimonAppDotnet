@@ -3,11 +3,9 @@ using DigimonApp.Domain.Repositories;
 using DigimonApp.Domain.Services;
 using DigimonApp.Domain.Services.Communication;
 using DigimonApp.Resources;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace DigimonApp.Services
@@ -47,8 +45,8 @@ namespace DigimonApp.Services
         {
             try
             {
-                var user = await _usersRepository.GetUserByEmailAndPasswordAsync(resource.Email, resource.Password);
-                if (user == null)
+                var user = await _usersRepository.GetUserByEmailAsync(resource.Email);
+                if (user == null || !BCrypt.Net.BCrypt.Verify(resource.Password, user.Password))
                     return new LoginResponse($"There is no user with this username and password");
 
                 var token = await GenerateToken(user);
@@ -71,9 +69,7 @@ namespace DigimonApp.Services
                 if (existsUserWithEmail != null)
                     return new UserResponse($"An user with this email aready exists");
 
-                var hashedPassword = password;
-
-                user.Password = hashedPassword;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(password);
                 user.Role = UserRoleEnum.BASIC;
 
                 await _usersRepository.AddAsync(user);
