@@ -3,6 +3,7 @@ using DigimonApp.Domain.Repositories;
 using DigimonApp.Domain.Services;
 using DigimonApp.Domain.Services.Communication;
 using DigimonApp.Resources;
+using Newtonsoft.Json;
 
 namespace DigimonApp.Services
 {
@@ -53,12 +54,13 @@ namespace DigimonApp.Services
             {
                 await _digimonRepository.AddAsync(digimon);
                 await _unitOfWork.CompleteAsync();
+                RabbitMqService.SendBasicMessage(digimon, "DigimonQueue");
 
                 return new DigimonResponse(digimon);
             }
             catch (Exception ex)
             {
-                // Do some logging stuff
+                RabbitMqService.SendBasicMessage(digimon, "DigimonQueue");
                 return new DigimonResponse($"An error occurred when saving the digimon: {ex.Message}");
             }
         }
@@ -79,7 +81,6 @@ namespace DigimonApp.Services
             }
             catch (Exception ex)
             {
-                // Do some logging stuff
                 return new DigimonResponse($"An error occurred when deleting the category: {ex.Message}");
             }
         }

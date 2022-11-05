@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigimonApp", "DigimonApp\DigimonApp.csproj", "{AD1A3C47-AAE9-4A93-8B90-2D5BD89C96CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigimonAppTests", "DigimonAppTests\DigimonAppTests.csproj", "{5EE6CDA3-E31F-494A-8D93-D6468BE5B470}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigimonAppTests", "DigimonAppTests\DigimonAppTests.csproj", "{5EE6CDA3-E31F-494A-8D93-D6468BE5B470}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigimonAppLog", "DigimonAppLog\DigimonAppLog.csproj", "{3CE01FDF-B21F-4445-8870-31F7D5A8743D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5EE6CDA3-E31F-494A-8D93-D6468BE5B470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EE6CDA3-E31F-494A-8D93-D6468BE5B470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EE6CDA3-E31F-494A-8D93-D6468BE5B470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CE01FDF-B21F-4445-8870-31F7D5A8743D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CE01FDF-B21F-4445-8870-31F7D5A8743D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CE01FDF-B21F-4445-8870-31F7D5A8743D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CE01FDF-B21F-4445-8870-31F7D5A8743D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
