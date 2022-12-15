@@ -20,7 +20,7 @@ namespace DigimonApp.Controllers
             _mapper = mapper;
         }
 
-
+        // TODO - Verificar se faz sentido retornar um IActionResult
         [HttpGet]
         public async Task<IEnumerable<DigimonResource>> GetAllAsync([FromQuery] ListDigimonResource resource)
         {

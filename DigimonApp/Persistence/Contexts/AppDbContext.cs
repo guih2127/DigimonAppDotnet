@@ -8,6 +8,7 @@ namespace DigimonApp.Persistence.Contexts
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options) { }
 
         public DbSet<Digimon> Digimons { get; set; }
+        public DbSet<Card> Cards { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -24,6 +25,9 @@ namespace DigimonApp.Persistence.Contexts
             (
                 new Digimon { Id = 1, Name = "Agumon", Image = "https://digimon.shadowsmith.com/img/agumon.jpg", Level = DigimonLevelEnum.ROOKIE }
             );
+
+            builder.Entity<Card>().ToTable("Cards");
+            builder.Entity<Card>().HasKey(p => p.Id);
         }
     }
 }

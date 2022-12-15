@@ -1,13 +1,14 @@
-﻿using DigimonApp.Domain.Models;
+﻿using DigimonApp.Domain.Services;
+using DigimonApp.Resources.RabbitMQ;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
 namespace DigimonApp.Services
 {
-    public static class RabbitMqService
+    public class RabbitMQService : IRabbitMQService
     {
-        public static void SendBasicMessage(Digimon digimon, string queue)
+        public void SendLogMessage(RabbitMqLogMessage log, string queue)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (var connection = factory.CreateConnection())
@@ -19,7 +20,7 @@ namespace DigimonApp.Services
                                      autoDelete: false,
                                      arguments: null);
 
-                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(digimon));
+                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(log));
 
                 channel.BasicPublish(exchange: "",
                                      routingKey: queue,

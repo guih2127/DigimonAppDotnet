@@ -29,7 +29,7 @@ namespace DigimonApp.Persistence.Repositories
             await _context.Digimons.AddAsync(digimon);
         }
 
-        public async Task<Digimon> FindByIdAsync(int id)
+        public async Task<Digimon?> FindByIdAsync(int id)
         {
             return await _context.Digimons.FindAsync(id);
         }
@@ -42,6 +42,13 @@ namespace DigimonApp.Persistence.Repositories
         public void Remove(Digimon category)
         {
             _context.Digimons.Remove(category);
+        }
+
+        public async Task<Digimon?> FindByNameAsync(string name)
+        {
+            return await _context.Digimons
+                .Where(d => d.Name == name)
+                .FirstOrDefaultAsync();
         }
     }
 }

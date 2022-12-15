@@ -1,17 +1,13 @@
-﻿using RabbitMQ.Client.Events;
+﻿using DigimonAppLog.Services;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Text;
-using DigimonAppLog.Repositories;
-using DigimonAppLog.Models;
-using System.Text.Json;
-using DigimonApp.Domain.Models;
-using MongoDB.Bson;
 
-class Receive
+class LogConsumer
 {
     public static void Main()
     {
-        var logRepository = new LogRepository();
+        var logService = new LogService();
         var factory = new ConnectionFactory() { HostName = "localhost" };
 
         using (var connection = factory.CreateConnection())
@@ -24,19 +20,12 @@ class Receive
                                  arguments: null);
 
             var consumer = new EventingBasicConsumer(channel);
+
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                Digimon digimon = JsonSerializer.Deserialize<Digimon>(message);
-                var digimonLog = new DigimonLog
-                {
-                    _id = ObjectId.GenerateNewId(),
-                    Digimon = digimon,
-                    OperationType = OperationType.SAVE,
-                    Success = true
-                };
-                await logRepository.CreateLogDocument<DigimonLog>(digimonLog);
+                await logService.CreateLogDocument(message);
 
                 Console.WriteLine(body);
                 Console.WriteLine(" [x] Received {0}", message);
@@ -45,7 +34,7 @@ class Receive
                                  autoAck: true,
                                  consumer: consumer);
 
-            Console.WriteLine(" Press [enter] to exit.");
+            Console.WriteLine("Log Application is running...");
             Console.ReadLine();
         }
     }

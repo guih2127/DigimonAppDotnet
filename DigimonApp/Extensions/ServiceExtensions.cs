@@ -18,6 +18,7 @@ namespace DigimonApp.Extensions
             collection.AddScoped<IUnitOfWork, UnitOfWork>();
             collection.AddScoped<IDigimonsService, DigimonsService>();
             collection.AddScoped<IUsersService, UsersService>();
+            collection.AddScoped<IRabbitMQService, RabbitMQService>();
         }
     }
 }

@@ -7,7 +7,8 @@ namespace DigimonApp.Domain.Repositories
     {
         Task<IEnumerable<Digimon>> ListAsync(ListDigimonResource resource);
         Task AddAsync(Digimon digimon);
-        Task<Digimon> FindByIdAsync(int id);
+        Task<Digimon?> FindByIdAsync(int id);
+        Task<Digimon?> FindByNameAsync(string name);
         void Update(Digimon digimon);
         void Remove(Digimon digimon);
     }
