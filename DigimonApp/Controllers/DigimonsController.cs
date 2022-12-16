@@ -31,7 +31,7 @@ namespace DigimonApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> PostAsync([FromBody] SaveDigimonResource resource)
         {
             if (!ModelState.IsValid)
@@ -48,6 +48,7 @@ namespace DigimonApp.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutAsync(int id, [FromBody] SaveDigimonResource resource)
         {
             if (!ModelState.IsValid)
@@ -64,6 +65,7 @@ namespace DigimonApp.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _digimonService.DeleteAsync(id);
