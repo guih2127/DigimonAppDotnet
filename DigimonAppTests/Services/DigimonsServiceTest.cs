@@ -31,25 +31,33 @@ namespace DigimonAppTests.Services
                 new Digimon { Id = 1, Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" },
                 new Digimon { Id = 2, Name = "Name2", Level = DigimonLevelEnum.ROOKIE, Image = "Image2" }
             };
+
             var listDigimonsResource = new ListDigimonResource();
             digimonsRepositoryMock.Setup(s => s.ListAsync(listDigimonsResource)).ReturnsAsync(digimons);
 
             var result = await digimonsService.ListAsync(listDigimonsResource);
             Assert.Equal(digimons, result);
+
+            digimonsRepositoryMock.Verify(s => s.ListAsync(listDigimonsResource));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async void SaveDigimonWithSuccess()
         {
             var digimonToInsert = new Digimon { Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
-            var result = await digimonsService.SaveAsync(digimonToInsert);
 
+            var result = await digimonsService.SaveAsync(digimonToInsert);
             Assert.Equal(digimonToInsert, result.Digimon);
             Assert.True(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByNameAsync(digimonToInsert.Name));
+            digimonsRepositoryMock.Verify(s => s.AddAsync(digimonToInsert));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void SaveDigimonWithExistingName()
+        public async void SaveDigimonWithExistingNameWithoutSuccess()
         {
             var existingDigimon = new Digimon { Id = 1, Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
             var digimonToInsert = new Digimon { Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
@@ -71,27 +79,40 @@ namespace DigimonAppTests.Services
             Assert.Equal(digimonToUpdate.Level, result.Digimon.Level);
             Assert.Equal(digimonToUpdate.Image, result.Digimon.Image);
             Assert.True(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByIdAsync(digimonToUpdate.Id));
+            digimonsRepositoryMock.Verify(s => s.FindByNameAsync(digimonToUpdate.Name));
+            digimonsRepositoryMock.Verify(s => s.Update(It.IsAny<Digimon>()));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void UpdateDigimonWithInexistentId()
+        public async void UpdateDigimonWithInexistentIdWithoutSuccess()
         {
             var digimonToUpdate = new Digimon { Name = "Name12", Level = DigimonLevelEnum.ROOKIE, Image = "Image12" };
 
             var result = await digimonsService.UpdateAsync(0, digimonToUpdate);
             Assert.Null(result.Digimon);
             Assert.False(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByIdAsync(digimonToUpdate.Id));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void UpdateDigimonWithExistentName()
+        public async void UpdateDigimonWithExistentNameWithoutSuccess()
         {
-            var existingDigimon = new Digimon { Id = 1, Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
-            var digimonToUpdate = new Digimon { Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
+            var existingDigimon = new Digimon { Id = 2, Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
+            var digimonToUpdate = new Digimon { Id = 1, Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
+            digimonsRepositoryMock.Setup(s => s.FindByIdAsync(digimonToUpdate.Id)).ReturnsAsync(digimonToUpdate);
             digimonsRepositoryMock.Setup(s => s.FindByNameAsync(existingDigimon.Name)).ReturnsAsync(existingDigimon);
 
-            var result = await digimonsService.UpdateAsync(2, digimonToUpdate);
+            var result = await digimonsService.UpdateAsync(digimonToUpdate.Id, digimonToUpdate);
             Assert.False(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByIdAsync(digimonToUpdate.Id));
+            digimonsRepositoryMock.Verify(s => s.FindByNameAsync(digimonToUpdate.Name));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -103,14 +124,21 @@ namespace DigimonAppTests.Services
             var result = await digimonsService.DeleteAsync(1);
             Assert.Equal(digimonToDelete, result.Digimon);
             Assert.True(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByIdAsync(digimonToDelete.Id));
+            digimonsRepositoryMock.Verify(s => s.Remove(digimonToDelete));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async void DeleteDigimonWithInexistentId()
+        public async void DeleteDigimonWithInexistentIdWithoutSuccess()
         {
             var result = await digimonsService.DeleteAsync(0);
             Assert.Null(result.Digimon);
             Assert.False(result.Success);
+
+            digimonsRepositoryMock.Verify(s => s.FindByIdAsync(0));
+            digimonsRepositoryMock.VerifyNoOtherCalls();
         }
     }
 }

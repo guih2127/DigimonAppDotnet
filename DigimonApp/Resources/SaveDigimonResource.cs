@@ -1,18 +1,20 @@
 ﻿using DigimonApp.Domain.Models;
+using DigimonApp.Utils.CustomValidators;
 using System.ComponentModel.DataAnnotations;
 
 namespace DigimonApp.Resources
 {
     public class SaveDigimonResource
     {
-        [Required(ErrorMessage = "Name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Name is required")]
         [MaxLength(50)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        [Required(ErrorMessage = "Image is required")]
-        public string Image { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Image is required")]
+        public string? Image { get; set; }
 
         [Required(ErrorMessage = "Level is required")]
-        public DigimonLevelEnum Level { get; set; }
+        [NumberRange(1, 6, ErrorMessage = "Please enter a value between 1 and 6")]
+        public int? Level { get; set; }
     }
 }

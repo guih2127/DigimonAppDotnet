@@ -8,7 +8,9 @@ namespace DigimonApp.Mapping
     {
         public ResourceToModelProfile()
         {
-            CreateMap<SaveDigimonResource, Digimon>();
+            CreateMap<SaveDigimonResource, Digimon>()
+                .ForMember(dest => dest.Level, opt => opt.MapFrom(src => (DigimonLevelEnum)src.Level));
+
             CreateMap<SaveUserResource, User>();
         }
     }

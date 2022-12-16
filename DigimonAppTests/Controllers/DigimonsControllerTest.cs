@@ -7,8 +7,10 @@ using DigimonApp.Mapping;
 using DigimonApp.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Xunit;
+using static DigimonAppTests.Utils.Utils;
 
 namespace DigimonAppTests.Controllers
 {
@@ -65,7 +67,7 @@ namespace DigimonAppTests.Controllers
         [Fact]
         public async void PostDigimonWithSuccess()
         {
-            var digimonToSave = new SaveDigimonResource { Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
+            var digimonToSave = new SaveDigimonResource { Name = "Name1", Level = 1, Image = "Image1" };
             var digimon = new Digimon { Name = "Name1", Level = DigimonLevelEnum.ROOKIE, Image = "Image1" };
             var digimonResource = new DigimonResource { Name = "Name1", Level = "ROOKIE", Image = "Image1" };
             var digimonResponse = new DigimonResponse(digimon);
@@ -85,5 +87,89 @@ namespace DigimonAppTests.Controllers
             digimonsService.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async void PostDigimonWithoutNameWithoutSuccess()
+        {
+            var digimonToSave = new SaveDigimonResource { Level = 1, Image = "Image1" };
+
+            ValidateResourceForTests(digimonToSave, digimonsController);
+            var result = await digimonsController.PostAsync(digimonToSave) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.False(digimonsController.ModelState.IsValid);
+            Assert.Equal(1, digimonsController.ModelState?.Count);
+            Assert.Equal(
+                "Name is required", 
+                digimonsController.ModelState?.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).FirstOrDefault()
+            );
+        }
+
+        [Fact]
+        public async void PostDigimonWithoutImageWithoutSuccess()
+        {
+            var digimonToSave = new SaveDigimonResource { Name = "Name1", Level = 1 };
+
+            ValidateResourceForTests(digimonToSave, digimonsController);
+            var result = await digimonsController.PostAsync(digimonToSave) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.False(digimonsController.ModelState.IsValid);
+            Assert.Equal(1, digimonsController.ModelState?.Count);
+            Assert.Equal(
+                "Image is required",
+                digimonsController.ModelState?.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).FirstOrDefault()
+            );
+        }
+
+        [Fact]
+        public async void PostDigimonWithoutLevelWithoutSuccess()
+        {
+            var digimonToSave = new SaveDigimonResource { Name = "Name1", Image = "Image1" };
+
+            ValidateResourceForTests(digimonToSave, digimonsController);
+            var result = await digimonsController.PostAsync(digimonToSave) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.False(digimonsController.ModelState.IsValid);
+            Assert.Equal(1, digimonsController.ModelState?.Count);
+            Assert.Equal(
+                "Level is required",
+                digimonsController.ModelState?.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).FirstOrDefault()
+            );
+        }
+
+        [Fact]
+        public async void PostDigimonWithLevelSmallerThanOneWithoutSuccess()
+        {
+            var digimonToSave = new SaveDigimonResource { Name = "Name1", Image = "Image1", Level = 0 };
+
+            ValidateResourceForTests(digimonToSave, digimonsController);
+            var result = await digimonsController.PostAsync(digimonToSave) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.False(digimonsController.ModelState.IsValid);
+            Assert.Equal(1, digimonsController.ModelState?.Count);
+            Assert.Equal(
+                "Please enter a value between 1 and 6",
+                digimonsController.ModelState?.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).FirstOrDefault()
+            );
+        }
+
+        [Fact]
+        public async void PostDigimonWithLevelHigherThenSixWithoutSuccess()
+        {
+            var digimonToSave = new SaveDigimonResource { Name = "Name1", Image = "Image1", Level = 7 };
+
+            ValidateResourceForTests(digimonToSave, digimonsController);
+            var result = await digimonsController.PostAsync(digimonToSave) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.False(digimonsController.ModelState.IsValid);
+            Assert.Equal(1, digimonsController.ModelState?.Count);
+            Assert.Equal(
+                "Please enter a value between 1 and 6",
+                digimonsController.ModelState?.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).FirstOrDefault()
+            );
+        }
     }
 }

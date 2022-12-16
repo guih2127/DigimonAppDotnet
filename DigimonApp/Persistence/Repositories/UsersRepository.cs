@@ -17,7 +17,7 @@ namespace DigimonApp.Persistence.Repositories
             await _context.Users.AddAsync(user);
         }
 
-        public async Task<User> GetUserByEmailAndPasswordAsync(string email, string password)
+        public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string password)
         {
             var user = await _context.Users
                 .Where(x => x.Email.ToLower() == email.ToLower() && x.Password == password)

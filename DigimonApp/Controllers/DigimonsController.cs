@@ -31,7 +31,7 @@ namespace DigimonApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> PostAsync([FromBody] SaveDigimonResource resource)
         {
             if (!ModelState.IsValid)
